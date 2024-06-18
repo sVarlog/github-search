@@ -23,11 +23,12 @@ const Home: React.FC<HomeProps> = ({ theme }) => {
     const [isLoading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const [searchParams, setSearchParams] = useSearchParams();
+    const [isDataFetched, setDataFetched] = useState(false);
     const isInitialLoad = useRef(true);
     const mainSlice = useSelector((store: RootState) => store.mainSlice);
     const dispatch = useDispatch<AppDispatch>();
 
-    const getUsers = useCallback(
+    const getInitialUsers = useCallback(
         async ({ searchQuery }: { searchQuery: string }) => {
             if (!searchQuery) return;
 
@@ -41,11 +42,13 @@ const Home: React.FC<HomeProps> = ({ theme }) => {
                     page: 1,
                 });
 
-                dispatch(updateCurrentPage(2));
+                dispatch(updateCurrentPage(1));
 
                 setUsersList(usersList);
 
                 setPageLoading(false);
+
+                setDataFetched(true);
             } catch (error: any) {
                 setError(error.response?.data?.message || error.message);
 
@@ -66,7 +69,7 @@ const Home: React.FC<HomeProps> = ({ theme }) => {
                 const usersList = await getUsersByQuery({
                     query: searchQuery,
                     resultsPerPage: mainSlice.resultsPerPage,
-                    page: mainSlice.page,
+                    page: mainSlice.page + 1,
                 });
 
                 dispatch(updateCurrentPage(mainSlice.page + 1));
@@ -112,14 +115,14 @@ const Home: React.FC<HomeProps> = ({ theme }) => {
 
             if (initialQuery) {
                 setQuery(initialQuery);
-                getUsers({ searchQuery: initialQuery });
+                getInitialUsers({ searchQuery: initialQuery });
             } else {
                 setPageLoading(false);
             }
 
             isInitialLoad.current = false;
         }
-    }, [searchParams, getUsers]);
+    }, [searchParams, getInitialUsers]);
 
     useEffect(() => {
         if (!isInitialLoad.current) {
@@ -141,7 +144,7 @@ const Home: React.FC<HomeProps> = ({ theme }) => {
                 theme={theme}
                 query={query}
                 onInput={onSearchChange}
-                onSearchClick={() => getUsers({ searchQuery: query })}
+                onSearchClick={() => getInitialUsers({ searchQuery: query })}
                 className="mb-[15px] w-full"
             />
             {isPageLoading ? (
@@ -157,7 +160,9 @@ const Home: React.FC<HomeProps> = ({ theme }) => {
                             : "text-dark-contentFontColor"
                     )}
                 >
-                    {!query ? "Enter github username" : "No results found"}
+                    {!query || !isDataFetched
+                        ? "Enter github username & hit Enter"
+                        : "No results found"}
                 </p>
             ) : (
                 <>
