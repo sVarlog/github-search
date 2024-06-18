@@ -1,0 +1,26 @@
+:root {
+    /* Light theme */
+    --lightHeaderColor: #436cff;
+    --lightHeaderSwitcherColor: #3b82f6;
+    --lightHeaderFontColor: #ffffff;
+    --lightContainerColor: #f3f4f6;
+    --lightContentColor: #ffffff;
+    --lightContentFontColor: #111827;
+    --lightCardColor: #ffffff;
+    --lightLinkBtnColor: #ffffff;
+    --lightLinkBtnFontColor: #3b82f6;
+    --lightLinkColor: #3b82f6;
+    --lightBorderColor: #436cff;
+    /* Dark theme */
+    --darkHeaderColor: #2d2d2d;
+    --darkHeaderSwitcherColor: #30363d;
+    --darkHeaderFontColor: #ffffff;
+    --darkContainerColor: #0d1117;
+    --darkContentColor: #30363d;
+    --darkContentFontColor: #ffffff;
+    --darkCardColor: #2d2d2d;
+    --darkLinkBtnColor: #30363d;
+    --darkLinkBtnFontColor: #ffffff;
+    --darkLinkColor: #ffffff;
+    --darkBorderColor: rgba(255, 255, 255, 0.25);
+}
